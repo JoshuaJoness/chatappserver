@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 app.get('/messages', require('./controllers/getMessages'))
 app.post('/message', require('./controllers/postMessage'));
 
-server.listen(4002 || process.env.PORT, () => {
+server.listen(4002, () => {
   console.log('Ready on PORT 4002');
 })
 
