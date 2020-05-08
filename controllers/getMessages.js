@@ -1,3 +1,5 @@
+// Not using this anymore, I've placed this logic inside of the socket event for speed
+
 const Message = require('../models/Message')
 
 module.exports = (req,res) => {
