@@ -7,6 +7,9 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 require('dotenv').config();
 
+const getmessages = require('./utils/getmessages')
+
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
   err ? console.log(err) : console.log('Connected to MongoDB')
@@ -18,13 +21,22 @@ io.on('connection', (socket) => {
   // Handles connection event
   socket.broadcast.emit('message', formatMessage('zen-bot', `A user has joined the chat`))
   // Handles join even
-  socket.on('join', (name) => {
-    io.emit('msg', formatMessage('zen-bot', `${name} has entered the room`))
+  socket.on('join', (name,room) => {
+    
+    const Message = require('./models/Message')
+    Message.find({ room:room }).then(data => {
+      io.emit('history', data)
+      io.emit('msg', formatMessage('zen-bot', `${name} has entered the room`))
+    })
+    
+
+    
+
   })
   // Handles disconnect event 
   socket.on('disconnect', () => {
     console.log('user disconnected');
-    io.emit('message', formatMessage('zen-bot',`A user has left the chat`))
+    io.emit('msg', formatMessage('zen-bot',`A user has left the chat`))
   });
   // Listens for message event
   socket.on('msg', (message, name, room) => {
@@ -42,7 +54,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to the ZenChat server');
 });
 
-app.get('/messages', require('./controllers/getMessages'))
+// app.get('/messages', require('./controllers/getMessages'))
 app.post('/message', require('./controllers/postMessage'));
 
 server.listen(process.env.PORT, () => {
