@@ -21,17 +21,12 @@ io.on('connection', (socket) => {
   // Handles connection event
   socket.broadcast.emit('message', formatMessage('zen-bot', `A user has joined the chat`))
   // Handles join even
-  socket.on('join', (name,room) => {
-    
+  socket.on('join', (name,room) => { 
     const Message = require('./models/Message')
     Message.find({ room:room }).then(data => {
       io.emit('history', data)
       io.emit('msg', formatMessage('zen-bot', `${name} has entered the room`))
     })
-    
-
-    
-
   })
   // Handles disconnect event 
   socket.on('disconnect', () => {
