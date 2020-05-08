@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+const PORT = 4002 || process.env.PORT
+
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/zenchat', {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
   err ? console.log(err) : console.log('Connected to MongoDB')
@@ -44,8 +46,8 @@ app.get('/', (req, res) => {
 app.get('/messages', require('./controllers/getMessages'))
 app.post('/message', require('./controllers/postMessage'));
 
-server.listen(4002 || process.env.PORT, () => {
-  console.log('Ready on PORT 4002');
+server.listen(PORT, () => {
+  console.log(`Ready on PORT ${PORT}`);
 })
 
 
