@@ -8,7 +8,7 @@ const cors = require('cors')
 require('dotenv').config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
+mongoose.connect(process.env.MONGOLAB_ROSE_URI, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
   err ? console.log(err) : console.log('Connected to MongoDB')
 })
 
